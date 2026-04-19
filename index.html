@@ -1,132 +1,168 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Outdoor Trip Planner</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Outdoor Adventures</title>
 
-<style>
-:root {
-  --bg: #ffffff;
-  --text: #222;
-  --card: #f4f4f4;
-}
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
 
-body.dark {
-  --bg: #121212;
-  --text: #f4f4f4;
-  --card: #1e1e1e;
-}
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
 
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  transition: 0.3s;
-}
+    body {
+      background: #f4f7f5;
+      color: #333;
+    }
 
-header {
-  padding: 1rem;
-  display: flex;
-  justify-content: space-between;
-  background: #2c7a7b;
-  color: white;
-}
+    header {
+      background: url('https://images.unsplash.com/photo-1501785888041-af3ef285b470') center/cover no-repeat;
+      height: 90vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: white;
+    }
 
-button {
-  margin-left: 10px;
-  padding: 5px 10px;
-  cursor: pointer;
-}
+    header h1 {
+      font-size: 3rem;
+      background: rgba(0,0,0,0.5);
+      padding: 20px;
+      border-radius: 10px;
+    }
 
-.hero {
-  padding: 2rem;
-  text-align: center;
-}
+    nav {
+      background: #1b4332;
+      padding: 15px;
+      text-align: center;
+    }
 
-.card {
-  background: var(--card);
-  padding: 1rem;
-  margin: 1rem;
-  border-radius: 10px;
-}
+    nav a {
+      color: white;
+      margin: 0 15px;
+      text-decoration: none;
+      font-weight: 500;
+      transition: 0.3s;
+    }
 
-.container {
-  max-width: 900px;
-  margin: auto;
-}
+    nav a:hover {
+      color: #95d5b2;
+    }
 
-.checklist li {
-  cursor: pointer;
-}
+    .section {
+      padding: 60px 20px;
+      max-width: 1100px;
+      margin: auto;
+    }
 
-.checked {
-  text-decoration: line-through;
-  opacity: 0.6;
-}
-</style>
+    .section h2 {
+      text-align: center;
+      margin-bottom: 40px;
+      color: #1b4332;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      transition: transform 0.3s;
+    }
+
+    .card:hover {
+      transform: translateY(-8px);
+    }
+
+    .card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+    }
+
+    .card-content {
+      padding: 15px;
+    }
+
+    .card-content h3 {
+      margin-bottom: 10px;
+      color: #2d6a4f;
+    }
+
+    footer {
+      background: #1b4332;
+      color: white;
+      text-align: center;
+      padding: 20px;
+      margin-top: 40px;
+    }
+  </style>
 </head>
-
 <body>
 
-<header>
-  <h2 id="title">Outdoor Trip Planner</h2>
-  <div>
-    <button onclick="toggleTheme()">🌙</button>
-    <button onclick="toggleLang()">🌍</button>
-  </div>
-</header>
+  <nav>
+    <a href="#">Home</a>
+    <a href="#activities">Activities</a>
+    <a href="#about">About</a>
+  </nav>
 
-<div class="hero">
-  <h1 id="headline">Plan Your Perfect Adventure</h1>
-  <p id="subtext">Guides, gear, and checklists for your next outdoor trip.</p>
-</div>
+  <header>
+    <h1>Explore the Outdoors 🌄</h1>
+  </header>
 
-<div class="container">
+  <section id="activities" class="section">
+    <h2>Popular Activities</h2>
+    <div class="cards">
 
-  <div class="card">
-    <h3 id="checklistTitle">Camping Checklist</h3>
-    <ul class="checklist" id="list">
-      <li onclick="toggleCheck(this)">Tent</li>
-      <li onclick="toggleCheck(this)">Sleeping Bag</li>
-      <li onclick="toggleCheck(this)">Flashlight</li>
-      <li onclick="toggleCheck(this)">Food & Water</li>
-    </ul>
-  </div>
+      <div class="card">
+        <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee">
+        <div class="card-content">
+          <h3>Hiking</h3>
+          <p>Discover scenic trails and breathtaking views.</p>
+        </div>
+      </div>
 
-  <div class="card">
-    <h3 id="guideTitle">Featured Guide</h3>
-    <p id="guideText">Explore one of the best fishing and camping destinations in the region.</p>
-  </div>
+      <div class="card">
+        <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e">
+        <div class="card-content">
+          <h3>Kayaking</h3>
+          <p>Enjoy peaceful waters and nature up close.</p>
+        </div>
+      </div>
 
-</div>
+      <div class="card">
+        <img src="https://images.unsplash.com/photo-1499696010180-025ef6e1a8f9">
+        <div class="card-content">
+          <h3>Camping</h3>
+          <p>Experience the wild under the stars.</p>
+        </div>
+      </div>
 
-<script>
-let dark = false;
-function toggleTheme() {
-  document.body.classList.toggle("dark");
-}
+    </div>
+  </section>
 
-function toggleCheck(el) {
-  el.classList.toggle("checked");
-}
+  <section id="about" class="section">
+    <h2>About</h2>
+    <p style="text-align:center; max-width:600px; margin:auto;">
+      This site is all about inspiring outdoor adventures and helping people reconnect with nature.
+    </p>
+  </section>
 
-let lang = "en";
-function toggleLang() {
-  if (lang === "en") {
-    document.getElementById("title").innerText = "Planificador de Aventuras";
-    document.getElementById("headline").innerText = "Planea tu aventura perfecta";
-    document.getElementById("subtext").innerText = "Guías, equipo y listas para tu viaje.";
-    document.getElementById("checklistTitle").innerText = "Lista de Camping";
-    document.getElementById("guideTitle").innerText = "Guía Destacada";
-    document.getElementById("guideText").innerText = "Explora uno de los mejores destinos de pesca y camping.";
-    lang = "es";
-  } else {
-    location.reload();
-  }
-}
-</script>
+  <footer>
+    <p>© 2026 Outdoor Adventures</p>
+  </footer>
 
 </body>
 </html>

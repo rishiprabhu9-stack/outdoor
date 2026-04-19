@@ -1,168 +1,678 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Outdoor Adventures</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Outdoor Adventures</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #f5f0e8;
+    --surface: #ece6d8;
+    --card: #faf7f2;
+    --text: #1a1208;
+    --muted: #6b5e42;
+    --accent: #2d5a27;
+    --accent2: #c17f2a;
+    --border: rgba(45,90,39,0.15);
+    --nav-bg: rgba(245,240,232,0.92);
+    --hero-overlay: rgba(20,30,10,0.42);
+    --card-shadow: 0 4px 32px rgba(45,90,39,0.10);
+    --btn-text: #fff;
+  }
+  [data-theme="dark"] {
+    --bg: #0e1410;
+    --surface: #151c13;
+    --card: #1c2618;
+    --text: #e8edd4;
+    --muted: #8faa7a;
+    --accent: #7ec86e;
+    --accent2: #e0a44a;
+    --border: rgba(126,200,110,0.18);
+    --nav-bg: rgba(14,20,16,0.94);
+    --hero-overlay: rgba(5,10,5,0.55);
+    --card-shadow: 0 4px 32px rgba(0,0,0,0.4);
+    --btn-text: #0e1410;
+  }
 
-  <!-- Google Font -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Poppins', sans-serif;
-    }
+  html { scroll-behavior: smooth; }
 
-    body {
-      background: #f4f7f5;
-      color: #333;
-    }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    transition: background 0.35s, color 0.35s;
+    overflow-x: hidden;
+  }
 
-    header {
-      background: url('https://images.unsplash.com/photo-1501785888041-af3ef285b470') center/cover no-repeat;
-      height: 90vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      color: white;
-    }
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: var(--nav-bg);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 2.5rem;
+    height: 64px;
+    transition: background 0.35s;
+  }
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: 0.02em;
+    text-decoration: none;
+  }
+  .nav-logo span { color: var(--accent2); font-style: italic; }
+  .nav-links {
+    display: flex; align-items: center; gap: 2rem;
+    list-style: none;
+  }
+  .nav-links a {
+    font-size: 0.88rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+  .nav-controls { display: flex; align-items: center; gap: 0.75rem; }
 
-    header h1 {
-      font-size: 3rem;
-      background: rgba(0,0,0,0.5);
-      padding: 20px;
-      border-radius: 10px;
-    }
+  .ctrl-btn {
+    display: flex; align-items: center; gap: 6px;
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 6px 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: var(--muted);
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s, border-color 0.2s;
+  }
+  .ctrl-btn:hover { background: var(--surface); color: var(--text); border-color: var(--accent); }
 
-    nav {
-      background: #1b4332;
-      padding: 15px;
-      text-align: center;
-    }
+  .lang-select {
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 6px 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: var(--muted);
+    cursor: pointer;
+    outline: none;
+    transition: background 0.2s, border-color 0.2s;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%238faa7a'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    padding-right: 28px;
+  }
+  [data-theme="light"] .lang-select { background-color: transparent; }
+  [data-theme="dark"] .lang-select { background-color: transparent; color: var(--muted); }
+  .lang-select option { background: var(--bg); color: var(--text); }
+  .lang-select:hover { border-color: var(--accent); }
 
-    nav a {
-      color: white;
-      margin: 0 15px;
-      text-decoration: none;
-      font-weight: 500;
-      transition: 0.3s;
-    }
+  /* HERO */
+  #home {
+    position: relative;
+    height: 100vh;
+    min-height: 600px;
+    display: flex; align-items: center; justify-content: center;
+    text-align: center;
+    overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background: url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1600&q=80') center/cover no-repeat;
+    transform: scale(1.04);
+    animation: heroZoom 18s ease-in-out infinite alternate;
+  }
+  @keyframes heroZoom {
+    from { transform: scale(1.04); }
+    to   { transform: scale(1.12); }
+  }
+  .hero-overlay {
+    position: absolute; inset: 0;
+    background: var(--hero-overlay);
+  }
+  .hero-content {
+    position: relative; z-index: 2;
+    max-width: 720px;
+    padding: 0 1.5rem;
+    animation: fadeUp 1s ease both;
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(28px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .hero-eyebrow {
+    display: inline-block;
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent2);
+    background: rgba(193,127,42,0.15);
+    border: 1px solid rgba(193,127,42,0.35);
+    border-radius: 100px;
+    padding: 5px 16px;
+    margin-bottom: 1.4rem;
+  }
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.8rem, 7vw, 5.2rem);
+    font-weight: 700;
+    line-height: 1.08;
+    color: #fff;
+    margin-bottom: 1.2rem;
+  }
+  .hero-title em { font-style: italic; color: #a8d498; }
+  .hero-sub {
+    font-size: 1.1rem;
+    font-weight: 300;
+    color: rgba(255,255,255,0.82);
+    line-height: 1.65;
+    margin-bottom: 2.4rem;
+    max-width: 520px;
+    margin-left: auto; margin-right: auto;
+  }
+  .hero-cta {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--accent);
+    color: #fff;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-decoration: none;
+    border-radius: 100px;
+    padding: 14px 32px;
+    transition: background 0.2s, transform 0.2s;
+  }
+  .hero-cta:hover { background: #3a7032; transform: translateY(-2px); }
 
-    nav a:hover {
-      color: #95d5b2;
-    }
+  .scroll-hint {
+    position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
+    z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 6px;
+    color: rgba(255,255,255,0.55);
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    animation: pulse 2.5s ease-in-out infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:0.5} 50%{opacity:1} }
+  .scroll-hint svg { width: 18px; height: 18px; }
 
-    .section {
-      padding: 60px 20px;
-      max-width: 1100px;
-      margin: auto;
-    }
+  /* SECTIONS */
+  section { padding: 6rem 2rem; }
+  .section-inner { max-width: 1080px; margin: 0 auto; }
+  .section-label {
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent2);
+    margin-bottom: 0.6rem;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.9rem, 4vw, 3rem);
+    font-weight: 700;
+    line-height: 1.18;
+    color: var(--text);
+    margin-bottom: 1rem;
+  }
+  .section-desc {
+    font-size: 1.05rem;
+    font-weight: 300;
+    color: var(--muted);
+    line-height: 1.7;
+    max-width: 520px;
+    margin-bottom: 3.5rem;
+  }
 
-    .section h2 {
-      text-align: center;
-      margin-bottom: 40px;
-      color: #1b4332;
-    }
+  /* ACTIVITY CARDS */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: var(--card-shadow);
+    transition: transform 0.3s, box-shadow 0.3s;
+    cursor: default;
+  }
+  .card:hover { transform: translateY(-6px); box-shadow: 0 16px 48px rgba(45,90,39,0.18); }
+  [data-theme="dark"] .card:hover { box-shadow: 0 16px 48px rgba(0,0,0,0.5); }
+  .card-img {
+    width: 100%; height: 240px; object-fit: cover;
+    display: block;
+    transition: transform 0.5s;
+  }
+  .card:hover .card-img { transform: scale(1.04); }
+  .card-img-wrap { overflow: hidden; }
+  .card-body { padding: 1.5rem; }
+  .card-tag {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: rgba(45,90,39,0.1);
+    border-radius: 100px;
+    padding: 3px 12px;
+    margin-bottom: 0.8rem;
+  }
+  [data-theme="dark"] .card-tag { background: rgba(126,200,110,0.12); color: var(--accent); }
+  .card-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+  }
+  .card-desc {
+    font-size: 0.93rem;
+    font-weight: 300;
+    color: var(--muted);
+    line-height: 1.65;
+  }
 
-    .cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 20px;
-    }
+  /* DIVIDER */
+  .divider { border: none; border-top: 1px solid var(--border); margin: 0; }
 
-    .card {
-      background: white;
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      transition: transform 0.3s;
-    }
+  /* ABOUT */
+  #about { background: var(--surface); transition: background 0.35s; }
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+  @media (max-width: 700px) {
+    .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+    nav { padding: 0 1.2rem; }
+    .nav-links { display: none; }
+  }
+  .about-img-wrap {
+    border-radius: 20px;
+    overflow: hidden;
+    aspect-ratio: 4/3;
+    box-shadow: var(--card-shadow);
+  }
+  .about-img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .about-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+  .stat-box {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1.2rem 1.4rem;
+  }
+  .stat-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 0.2rem;
+  }
+  .stat-label { font-size: 0.82rem; color: var(--muted); font-weight: 400; }
 
-    .card:hover {
-      transform: translateY(-8px);
-    }
+  /* FOOTER */
+  footer {
+    background: var(--text);
+    color: var(--bg);
+    text-align: center;
+    padding: 2.5rem 1.5rem;
+  }
+  .footer-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--accent2);
+    margin-bottom: 0.5rem;
+    display: block;
+    font-style: italic;
+  }
+  .footer-tagline {
+    font-size: 0.85rem;
+    color: rgba(245,240,232,0.5);
+    margin-bottom: 1.2rem;
+  }
+  .footer-copy {
+    font-size: 0.78rem;
+    color: rgba(245,240,232,0.38);
+    margin-top: 0.4rem;
+  }
+  .footer-made {
+    font-size: 0.8rem;
+    color: rgba(245,240,232,0.55);
+    margin-top: 0.6rem;
+    letter-spacing: 0.04em;
+  }
+  .footer-made span { color: var(--accent2); font-weight: 500; }
 
-    .card img {
-      width: 100%;
-      height: 180px;
-      object-fit: cover;
-    }
-
-    .card-content {
-      padding: 15px;
-    }
-
-    .card-content h3 {
-      margin-bottom: 10px;
-      color: #2d6a4f;
-    }
-
-    footer {
-      background: #1b4332;
-      color: white;
-      text-align: center;
-      padding: 20px;
-      margin-top: 40px;
-    }
-  </style>
+  /* Theme icon */
+  .theme-icon { font-size: 14px; }
+</style>
 </head>
 <body>
 
-  <nav>
-    <a href="#">Home</a>
-    <a href="#activities">Activities</a>
-    <a href="#about">About</a>
-  </nav>
+<nav>
+  <a href="#home" class="nav-logo">Wild<span>Paths</span></a>
+  <ul class="nav-links">
+    <li><a href="#home" data-i18n="nav_home">Home</a></li>
+    <li><a href="#activities" data-i18n="nav_activities">Activities</a></li>
+    <li><a href="#about" data-i18n="nav_about">About</a></li>
+  </ul>
+  <div class="nav-controls">
+    <select class="lang-select" id="langSelect" aria-label="Language">
+      <option value="en">🌐 EN</option>
+      <option value="es">🌐 ES</option>
+      <option value="fr">🌐 FR</option>
+      <option value="de">🌐 DE</option>
+      <option value="ja">🌐 JA</option>
+      <option value="hi">🌐 HI</option>
+    </select>
+    <button class="ctrl-btn" id="themeToggle" aria-label="Toggle dark mode">
+      <span class="theme-icon" id="themeIcon">🌙</span>
+      <span id="themeLabel">Dark</span>
+    </button>
+  </div>
+</nav>
 
-  <header>
-    <h1>Explore the Outdoors 🌄</h1>
-  </header>
+<!-- HERO -->
+<section id="home" style="padding:0;">
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow" data-i18n="hero_eyebrow">Since 2018 · Nature First</div>
+    <h1 class="hero-title" data-i18n="hero_title">Explore the <em>Wild</em><br>On Your Terms</h1>
+    <p class="hero-sub" data-i18n="hero_sub">Discover handpicked trails, serene waterways, and starlit campsites — crafted for adventurers who seek the real outdoors.</p>
+    <a href="#activities" class="hero-cta" data-i18n="hero_cta">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2l6 6-6 6M2 8h12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Start Exploring
+    </a>
+  </div>
+  <div class="scroll-hint">
+    <svg viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 3v12M4 10l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    Scroll
+  </div>
+</section>
 
-  <section id="activities" class="section">
-    <h2>Popular Activities</h2>
-    <div class="cards">
-
+<!-- ACTIVITIES -->
+<section id="activities">
+  <div class="section-inner">
+    <div class="section-label" data-i18n="act_label">What We Offer</div>
+    <h2 class="section-title" data-i18n="act_title">Popular Adventures</h2>
+    <p class="section-desc" data-i18n="act_desc">Three signature experiences, each designed to pull you deeper into the natural world.</p>
+    <div class="cards-grid">
       <div class="card">
-        <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee">
-        <div class="card-content">
-          <h3>Hiking</h3>
-          <p>Discover scenic trails and breathtaking views.</p>
+        <div class="card-img-wrap">
+          <img class="card-img" src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=700&q=80" alt="Hiking trail through mountains" />
+        </div>
+        <div class="card-body">
+          <div class="card-tag" data-i18n="tag_hiking">Hiking</div>
+          <div class="card-title" data-i18n="card_hike_title">Mountain Trails</div>
+          <p class="card-desc" data-i18n="card_hike_desc">Discover scenic ridge routes and summit views that reward every step — from gentle forest walks to challenging alpine ascents.</p>
         </div>
       </div>
-
       <div class="card">
-        <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e">
-        <div class="card-content">
-          <h3>Kayaking</h3>
-          <p>Enjoy peaceful waters and nature up close.</p>
+        <div class="card-img-wrap">
+          <img class="card-img" src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=700&q=80" alt="Kayaking on calm lake" />
+        </div>
+        <div class="card-body">
+          <div class="card-tag" data-i18n="tag_kayak">Kayaking</div>
+          <div class="card-title" data-i18n="card_kayak_title">River & Lake Routes</div>
+          <p class="card-desc" data-i18n="card_kayak_desc">Glide through glassy lakes and winding rivers, spotting wildlife from the water's surface in total serenity.</p>
         </div>
       </div>
-
       <div class="card">
-        <img src="https://images.unsplash.com/photo-1499696010180-025ef6e1a8f9">
-        <div class="card-content">
-          <h3>Camping</h3>
-          <p>Experience the wild under the stars.</p>
+        <div class="card-img-wrap">
+          <img class="card-img" src="https://images.unsplash.com/photo-1499696010180-025ef6e1a8f9?w=700&q=80" alt="Camping under stars" />
+        </div>
+        <div class="card-body">
+          <div class="card-tag" data-i18n="tag_camp">Camping</div>
+          <div class="card-title" data-i18n="card_camp_title">Under the Stars</div>
+          <p class="card-desc" data-i18n="card_camp_desc">Fall asleep to the sound of crickets and wake to crisp mountain air. Our campsites are chosen for seclusion and sky.</p>
         </div>
       </div>
-
     </div>
-  </section>
+  </div>
+</section>
 
-  <section id="about" class="section">
-    <h2>About</h2>
-    <p style="text-align:center; max-width:600px; margin:auto;">
-      This site is all about inspiring outdoor adventures and helping people reconnect with nature.
-    </p>
-  </section>
+<hr class="divider" />
 
-  <footer>
-    <p>© 2026 Outdoor Adventures</p>
-  </footer>
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-inner">
+    <div class="about-grid">
+      <div>
+        <div class="section-label" data-i18n="about_label">Our Story</div>
+        <h2 class="section-title" data-i18n="about_title">Born from a Love of Wild Places</h2>
+        <p class="section-desc" data-i18n="about_desc">We believe time in nature is time well spent. Our mission is to inspire people of all backgrounds to step outside, breathe deeply, and rediscover the world beyond their screens.</p>
+        <div class="about-stats">
+          <div class="stat-box">
+            <div class="stat-number">120+</div>
+            <div class="stat-label" data-i18n="stat1">Curated trails</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-number">8K+</div>
+            <div class="stat-label" data-i18n="stat2">Happy adventurers</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-number">6</div>
+            <div class="stat-label" data-i18n="stat3">Countries covered</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-number">4.9★</div>
+            <div class="stat-label" data-i18n="stat4">Average rating</div>
+          </div>
+        </div>
+      </div>
+      <div class="about-img-wrap">
+        <img class="about-img" src="https://images.unsplash.com/photo-1501854140801-50d01698950b?w=800&q=80" alt="Aerial view of green mountains and forest" />
+      </div>
+    </div>
+  </div>
+</section>
 
+<!-- FOOTER -->
+<footer>
+  <span class="footer-logo">WildPaths</span>
+  <p class="footer-tagline" data-i18n="footer_tag">Your guide to the great outdoors.</p>
+  <p class="footer-copy" data-i18n="footer_copy">© 2026 WildPaths · Outdoor Adventures</p>
+  <p class="footer-made">Made with ♥ by <span>Rishi Prabhu</span></p>
+</footer>
+
+<script>
+const translations = {
+  en: {
+    nav_home: "Home", nav_activities: "Activities", nav_about: "About",
+    hero_eyebrow: "Since 2018 · Nature First",
+    hero_title: "Explore the Wild\nOn Your Terms",
+    hero_sub: "Discover handpicked trails, serene waterways, and starlit campsites — crafted for adventurers who seek the real outdoors.",
+    hero_cta: "Start Exploring",
+    act_label: "What We Offer", act_title: "Popular Adventures",
+    act_desc: "Three signature experiences, each designed to pull you deeper into the natural world.",
+    tag_hiking: "Hiking", tag_kayak: "Kayaking", tag_camp: "Camping",
+    card_hike_title: "Mountain Trails",
+    card_hike_desc: "Discover scenic ridge routes and summit views that reward every step — from gentle forest walks to challenging alpine ascents.",
+    card_kayak_title: "River & Lake Routes",
+    card_kayak_desc: "Glide through glassy lakes and winding rivers, spotting wildlife from the water's surface in total serenity.",
+    card_camp_title: "Under the Stars",
+    card_camp_desc: "Fall asleep to the sound of crickets and wake to crisp mountain air. Our campsites are chosen for seclusion and sky.",
+    about_label: "Our Story", about_title: "Born from a Love of Wild Places",
+    about_desc: "We believe time in nature is time well spent. Our mission is to inspire people of all backgrounds to step outside, breathe deeply, and rediscover the world beyond their screens.",
+    stat1: "Curated trails", stat2: "Happy adventurers", stat3: "Countries covered", stat4: "Average rating",
+    footer_tag: "Your guide to the great outdoors.",
+    footer_copy: "© 2026 WildPaths · Outdoor Adventures",
+    theme_dark: "Dark", theme_light: "Light"
+  },
+  es: {
+    nav_home: "Inicio", nav_activities: "Actividades", nav_about: "Nosotros",
+    hero_eyebrow: "Desde 2018 · La Naturaleza Primero",
+    hero_title: "Explora lo Salvaje\nA Tu Manera",
+    hero_sub: "Descubre senderos únicos, aguas tranquilas y campamentos bajo las estrellas — para aventureros que buscan lo auténtico.",
+    hero_cta: "Empezar a Explorar",
+    act_label: "Lo Que Ofrecemos", act_title: "Aventuras Populares",
+    act_desc: "Tres experiencias únicas, cada una diseñada para llevarte más adentro del mundo natural.",
+    tag_hiking: "Senderismo", tag_kayak: "Kayak", tag_camp: "Campismo",
+    card_hike_title: "Senderos de Montaña",
+    card_hike_desc: "Descubre rutas de cresta escénicas y vistas desde la cima que recompensan cada paso.",
+    card_kayak_title: "Rutas de Ríos y Lagos",
+    card_kayak_desc: "Deslízate por lagos cristalinos y ríos sinuosos, observando la vida silvestre en perfecta serenidad.",
+    card_camp_title: "Bajo las Estrellas",
+    card_camp_desc: "Duerme al sonido de los grillos y despierta con el aire fresco de la montaña.",
+    about_label: "Nuestra Historia", about_title: "Nacidos del Amor por los Espacios Salvajes",
+    about_desc: "Creemos que el tiempo en la naturaleza es tiempo bien invertido. Nuestra misión es inspirar a personas de todos los orígenes a salir, respirar profundo y redescubrir el mundo.",
+    stat1: "Senderos curados", stat2: "Aventureros felices", stat3: "Países cubiertos", stat4: "Calificación media",
+    footer_tag: "Tu guía para el gran exterior.",
+    footer_copy: "© 2026 WildPaths · Aventuras al Aire Libre",
+    theme_dark: "Oscuro", theme_light: "Claro"
+  },
+  fr: {
+    nav_home: "Accueil", nav_activities: "Activités", nav_about: "À propos",
+    hero_eyebrow: "Depuis 2018 · La Nature d'Abord",
+    hero_title: "Explorer le Sauvage\nÀ Votre Rythme",
+    hero_sub: "Découvrez des sentiers triés sur le volet, des eaux sereines et des campements étoilés — pour ceux qui cherchent le vrai plein air.",
+    hero_cta: "Commencer l'Exploration",
+    act_label: "Ce Que Nous Offrons", act_title: "Aventures Populaires",
+    act_desc: "Trois expériences signature, chacune conçue pour vous plonger plus profondément dans le monde naturel.",
+    tag_hiking: "Randonnée", tag_kayak: "Kayak", tag_camp: "Camping",
+    card_hike_title: "Sentiers de Montagne",
+    card_hike_desc: "Découvrez des itinéraires de crête panoramiques et des vues sommitales qui récompensent chaque pas.",
+    card_kayak_title: "Routes Fluviales & Lacustres",
+    card_kayak_desc: "Glissez sur des lacs cristallins et des rivières sinueuses, observant la faune en toute sérénité.",
+    card_camp_title: "Sous les Étoiles",
+    card_camp_desc: "Endormez-vous au son des grillons et réveillez-vous dans l'air vif de la montagne.",
+    about_label: "Notre Histoire", about_title: "Nés d'un Amour des Espaces Sauvages",
+    about_desc: "Nous croyons que le temps passé dans la nature est du temps bien investi. Notre mission est d'inspirer les gens à sortir et à redécouvrir le monde naturel.",
+    stat1: "Sentiers sélectionnés", stat2: "Aventuriers satisfaits", stat3: "Pays couverts", stat4: "Note moyenne",
+    footer_tag: "Votre guide pour le grand air.",
+    footer_copy: "© 2026 WildPaths · Aventures en Plein Air",
+    theme_dark: "Sombre", theme_light: "Clair"
+  },
+  de: {
+    nav_home: "Start", nav_activities: "Aktivitäten", nav_about: "Über uns",
+    hero_eyebrow: "Seit 2018 · Natur zuerst",
+    hero_title: "Erkunde die Wildnis\nAuf Deine Art",
+    hero_sub: "Entdecke handverlesene Wege, ruhige Gewässer und Lagerfeuer unter dem Sternenhimmel — für echte Abenteurer.",
+    hero_cta: "Jetzt Entdecken",
+    act_label: "Was Wir Bieten", act_title: "Beliebte Abenteuer",
+    act_desc: "Drei einzigartige Erlebnisse, die dich tiefer in die Natur führen.",
+    tag_hiking: "Wandern", tag_kayak: "Kajak", tag_camp: "Camping",
+    card_hike_title: "Bergpfade",
+    card_hike_desc: "Entdecke malerische Gipfelrouten und Aussichten, die jeden Schritt belohnen.",
+    card_kayak_title: "Fluss- & Seerouten",
+    card_kayak_desc: "Gleite über glasklare Seen und gewundene Flüsse und beobachte die Tierwelt in völliger Ruhe.",
+    card_camp_title: "Unter den Sternen",
+    card_camp_desc: "Schlafe beim Zirpen der Grillen und erwache in der frischen Bergluft.",
+    about_label: "Unsere Geschichte", about_title: "Aus Liebe zu wilden Orten",
+    about_desc: "Wir glauben, dass Zeit in der Natur gut investierte Zeit ist. Unsere Mission ist es, Menschen zu inspirieren, hinauszugehen und die Welt neu zu entdecken.",
+    stat1: "Kuratierte Wege", stat2: "Glückliche Abenteurer", stat3: "Abgedeckte Länder", stat4: "Durchschnittsbewertung",
+    footer_tag: "Dein Führer ins Freie.",
+    footer_copy: "© 2026 WildPaths · Outdoor-Abenteuer",
+    theme_dark: "Dunkel", theme_light: "Hell"
+  },
+  ja: {
+    nav_home: "ホーム", nav_activities: "アクティビティ", nav_about: "私たちについて",
+    hero_eyebrow: "2018年から · 自然を最優先に",
+    hero_title: "あなたのペースで\n自然を探検しよう",
+    hero_sub: "厳選されたトレイル、静かな水辺、星空の下のキャンプサイト — 本物の自然を求める冒険者のために。",
+    hero_cta: "探検を始める",
+    act_label: "私たちのサービス", act_title: "人気のアドベンチャー",
+    act_desc: "自然の世界に深く引き込む3つの体験をご用意しています。",
+    tag_hiking: "ハイキング", tag_kayak: "カヤック", tag_camp: "キャンプ",
+    card_hike_title: "山岳トレイル",
+    card_hike_desc: "絶景の尾根ルートと山頂からの眺めを発見し、すべての一歩を楽しんでください。",
+    card_kayak_title: "川と湖のルート",
+    card_kayak_desc: "静かな湖や曲がりくねった川を滑るように進み、水面から野生動物を観察しましょう。",
+    card_camp_title: "星空の下で",
+    card_camp_desc: "虫の声に包まれて眠り、澄んだ山の空気の中で目覚めましょう。",
+    about_label: "私たちのストーリー", about_title: "大自然への愛から生まれた",
+    about_desc: "自然の中で過ごす時間は、かけがえのない時間だと私たちは信じています。すべての人が外に出て、深呼吸し、スクリーンの向こうの世界を再発見できるよう導きます。",
+    stat1: "厳選トレイル数", stat2: "満足した冒険者数", stat3: "対応国数", stat4: "平均評価",
+    footer_tag: "大自然へのガイド。",
+    footer_copy: "© 2026 WildPaths · アウトドアアドベンチャー",
+    theme_dark: "ダーク", theme_light: "ライト"
+  },
+  hi: {
+    nav_home: "होम", nav_activities: "गतिविधियाँ", nav_about: "हमारे बारे में",
+    hero_eyebrow: "2018 से · प्रकृति पहले",
+    hero_title: "जंगल की खोज करें\nअपनी शर्तों पर",
+    hero_sub: "चुनिंदा ट्रेल्स, शांत जलमार्ग, और तारों से भरे कैंपसाइट — असली प्रकृति की तलाश करने वाले साहसियों के लिए।",
+    hero_cta: "अभी शुरू करें",
+    act_label: "हम क्या प्रदान करते हैं", act_title: "लोकप्रिय साहसिक यात्राएं",
+    act_desc: "तीन अनूठे अनुभव, जो आपको प्रकृति की गहराई में ले जाएंगे।",
+    tag_hiking: "हाइकिंग", tag_kayak: "कयाकिंग", tag_camp: "कैम्पिंग",
+    card_hike_title: "पहाड़ी ट्रेल्स",
+    card_hike_desc: "सुंदर पर्वत मार्गों और शिखर दृश्यों की खोज करें जो हर कदम को पुरस्कृत करते हैं।",
+    card_kayak_title: "नदी और झील के मार्ग",
+    card_kayak_desc: "स्वच्छ झीलों और घुमावदार नदियों में सरकें और शांति से वन्यजीव देखें।",
+    card_camp_title: "तारों के नीचे",
+    card_camp_desc: "झींगुरों की आवाज में सोएं और ताजी पहाड़ी हवा में जागें।",
+    about_label: "हमारी कहानी", about_title: "जंगली स्थानों के प्रेम से जन्म",
+    about_desc: "हम मानते हैं कि प्रकृति में बिताया समय अच्छा समय है। हमारा मिशन सभी पृष्ठभूमि के लोगों को बाहर निकलने, गहरी सांस लेने और दुनिया को फिर से खोजने के लिए प्रेरित करना है।",
+    stat1: "चुनिंदा ट्रेल्स", stat2: "खुश साहसी", stat3: "देश शामिल", stat4: "औसत रेटिंग",
+    footer_tag: "महान आउटडोर के लिए आपका मार्गदर्शक।",
+    footer_copy: "© 2026 WildPaths · आउटडोर एडवेंचर्स",
+    theme_dark: "डार्क", theme_light: "लाइट"
+  }
+};
+
+let currentLang = 'en';
+let isDark = false;
+
+function applyTranslations(lang) {
+  const t = translations[lang];
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (t[key]) {
+      if (el.tagName === 'H1') {
+        el.innerHTML = t[key].replace('\n', '<br>');
+      } else {
+        el.textContent = t[key];
+      }
+    }
+  });
+  document.getElementById('themeLabel').textContent = isDark ? t['theme_light'] : t['theme_dark'];
+  document.documentElement.lang = lang;
+}
+
+document.getElementById('langSelect').addEventListener('change', function() {
+  currentLang = this.value;
+  applyTranslations(currentLang);
+});
+
+document.getElementById('themeToggle').addEventListener('click', function() {
+  isDark = !isDark;
+  document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+  document.getElementById('themeIcon').textContent = isDark ? '☀️' : '🌙';
+  applyTranslations(currentLang);
+});
+
+applyTranslations('en');
+</script>
 </body>
 </html>
